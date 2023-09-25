@@ -13,14 +13,13 @@ down:
 	@printf "Stopping configuration ${name}...\n"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
 
-re: down
-	@printf "Rebuild configuration ${name}...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+re: clean all
 
 clean: down
 	@printf "Cleaning configuration ${name}...\n"
 	@docker system prune -a
 	@sudo rm -rf ~/data/mariadb/*
+	@sudo rm -rf ~/data/wordpress/*
 
 fclean:
 	@printf "Total clean of all configurations docker\n"

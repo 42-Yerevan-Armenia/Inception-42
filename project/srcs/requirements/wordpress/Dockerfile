@@ -34,4 +34,14 @@ RUN wget https://wordpress.org/latest.zip && \
 COPY ./requirements/wordpress/conf/wp-config-create.sh .
 RUN sh wp-config-create.sh && rm wp-config-create.sh && \
     chmod -R 0777 wp-content/
-CMD ["/usr/sbin/php-fpm8", "-F"]
+
+RUN apk add php php-json php-phar php-mbstring php-iconv
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
+
+COPY ./requirements/wordpress/conf/user.sh ..
+RUN chmod 777 ../user.sh
+ENTRYPOINT sh ../user.sh
+
+#CMD ["/usr/sbin/php-fpm8", "-F"]
