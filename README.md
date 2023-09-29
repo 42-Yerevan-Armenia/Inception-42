@@ -4,7 +4,7 @@
 1. [Introduction](#introduction)
     - [What is a Virtual Machine?](#virtual-machine)
 2. [Installation](#installation)
-    - [Step 1: Installing & Configuring SSH](#step-1-installing--configuring-ssh)
+    - [Step 1: Configuring SSH](#step-1-configuring-ssh)
     - [Step 2: Installing & Configuring UFW](#step-2-installing--configuring-ufw)
     - [Step 3: Connecting to Server with SSH](#step-3-connecting-to-server-with-ssh)
     - [Step 4: Configuring *user*](#step-4-configuring-user)
@@ -17,12 +17,25 @@
     - [Step 4: Test project](#step-3-test-project)
         - [Test https](#test-https)
 4. [Makefile](#makefile)
-4. [Nginx](#nginx)
+5. [Nginx](#nginx)
     - [Step 1: What is Docker?](#what-is-docker)
     - [Step 2: Creation of Dokerfile](#creation-of-dockerfile)
-    - [Step 3: Config file](#config-file)
-    - [Step 4: Docker configuration](#docker-configuration)
-
+    - [Step 3: Nginx config file](#nginx-config-file)
+    - [Step 4: Docker config for Nginx](#docker-config-for-nginx)
+6. [MariaDB](#mariadb)
+    - [Step 1: Dokerfile](#dockerfile)
+    - [Step 2: MariaDB config file](#mariadb-config-file)
+    - [Step 3: Call script in Dokerfile](#call-script-in-dockerfile)
+    - [Step 4: Docker config for MariaDB](#docker-config-for-mariadb)
+    - [Step 5: Check MariaDB](#check-mariadb)
+7. [WordPress](#wordpress)
+    - [Step 1: Again Dokerfile](#again-dockerfile)
+    - [Step 2: Docker config for WordPress](#docker-config-for-wordpress)
+    - [Step 3: Volum & Network](#volume--network)
+    - [Step 4: Data](#data)
+    - [Step 5: WordPress config file](#wordpress-config-file)
+        - [Auto user](#auto-user)
+8. [Finish](#finish)
 
 
 ## Introduction
@@ -34,7 +47,7 @@ You will create your first machine in VirtualBox (or UTM if you can’t use Virt
     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Virtualbox_logo.png?20150209215936" width="100" height="100">
   </a>
 
-Virtualization allow us share a system with multiple virtual environments. The hypervisor manages the hardware system and separate the physical resources from the virtual environments. **The resources are managed followitn the needs, from the host to the guests.** When an user from a VM do a task that requires additional resources from the physical environment, the hypervisor manages the request so that the guest OS could access the resources of the physical environment.<br>
+**The resources are managed followitn the needs, from the host to the guests.** When an user from a VM do a task that requires additional resources from the physical environment, the hypervisor manages the request so that the guest OS could access the resources of the physical environment.<br>
 Once we know how they work, it is a good idea to see all the advantages we get from using virtual machines:
 <ul>
  <li>Different guest machines hosted on our computer <b>can run different operating systems</b>, so we will have different OS working on the same machine.</li>
@@ -45,7 +58,7 @@ Once we know how they work, it is a good idea to see all the advantages we get f
 </ul>
 
 ## Installation
-At the time of writing, the latest stable version of [debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on [debian](https://download.g0tmi1k.com/iso/Debian/Debian-11/debian-11.6.0-amd64-netinst.iso) 11, [here](https://www.youtube.com/watch?v=poCSq_0OmjE) is the link of 11 instalation guide. I use system with
+At the time of writing, the latest stable version of [debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on [debian](https://download.g0tmi1k.com/iso/Debian/Debian-11/debian-11.6.0-amd64-netinst.iso) 11, here is the [link](https://www.youtube.com/watch?v=poCSq_0OmjE) of instalation guide. I use system with
 
   - RAM 4GB
   - CPU 4
@@ -102,13 +115,9 @@ Add forward rule for VirtualBox.
 
 1. Go to VirtualBox-> Choose the VM->Select Settings 
 2. Choose “Network”-> “Adapter 1"->”Advanced”->”Port Forwarding”
-<a>
-    <img src="https://miro.medium.com/max/1342/1*rCj_FeuZ5Rm2abz48qhulg.png">
-</a>
+<a><img src="https://miro.medium.com/max/1342/1*rCj_FeuZ5Rm2abz48qhulg.png"></a>
 3. Enter the values as shown:
-<a>
-    <img src="https://github.com/codesshaman/inception/blob/main/media/ports_forwarding/step_6.png?raw=true">
-</a>
+<a><img src="https://github.com/codesshaman/inception/blob/main/media/ports_forwarding/step_6.png?raw=true"></a>
 
 Restart your VM.
 `reboot`
@@ -289,9 +298,7 @@ Let's run it `cd simple_docker_nginx_html`
 
 Select Web browser and go to *localhost* or *username.42.fr* 
 
-<a>
-    <img src="https://github.com/codesshaman/inception/blob/main/media/setting_docker/step_4.png?raw=true">
-</a>
+<a><img src="https://github.com/codesshaman/inception/blob/main/media/setting_docker/step_4.png?raw=true"></a>
 
 You can turn it off with *Ctrl + C*
 
@@ -359,13 +366,11 @@ Now let's run our test-docker and go to web by startx
 
 If you see this, don't worry because our own certificat don't have security cualification.
 
-<a>
-    <img src="https://github.com/codesshaman/inception/blob/main/media/install_certificate/step_6.png?raw=true">
-</a>
+<a><img src="https://github.com/codesshaman/inception/blob/main/media/install_certificate/step_6.png?raw=true"></a>
 
 Max we can do here just *Advanced ...* + *Accept the Risk and Contine*
 
-Sometimes it will didn't work, don't worry after some manipulation and magic it will work.
+Sometimes it will didn't work, don't worry after some manipulation and magic it will work. Now we have done here (you can delete this repo).
 
 `docker-compose down`
 
@@ -423,9 +428,7 @@ And finly for total fclean first we stop out container by `docker stop $$(docker
 
 ## Nginx
 
-<a>
-    <img src="https://github.com/codesshaman/inception/blob/main/media/nginx_deploy/step_1.png?raw=true">
-</a>
+<a><img src="https://github.com/codesshaman/inception/blob/main/media/nginx_deploy/step_1.png?raw=true"></a>
 
 Okey now let's take what it need
 
@@ -464,7 +467,7 @@ In the end we have to run the installed configuration. To do this, use the CMD i
 
 This way we run nginx directly and not in daemon mode. Daemon mode is a launch mode in which the application starts in the background or, in Windows parlance, as a service. For ease of debugging, we disable this mode and receive all nginx logs directly into the tty of the container.
 
-### Step 3: Config file
+### Step 3: Nginx config file
 
 Let's add config file `vim conf/nginx.conf`
 
@@ -504,11 +507,13 @@ Port 9000 is exactly the port of our php-fpm, through which the connection betwe
 
 Also let's copy our keys here `cp ~/project/srcs/requirements/tools/* ~/project/srcs/requirements/nginx/tools/`
 
-### Step 4: Docker configuration
+<a><img src="https://img.universitystudent.org/1/1/2/i-understand-nothing-meme.jpg"></a>
+
+### Step 4: Docker config for Nginx
 
 Docker-compose is a system for launching Docker containers; one might say, it is a kind of add-on to Docker. If in docker files we specified what software to install inside one container environment, then with docker-compose we can control the launch of many similar containers at once, launching them with one command.
 
-Let's modify our file `cd ../../ && vim docker-compose.yml`
+Let's modify our file `cd ../../ && vim docker-compose.yml` Be carefull, typing Tabs one more or less Tab will blow your .yml 
 
 ```
 version: '3'
@@ -519,15 +524,462 @@ services:
       context: .
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
-#    depends_on:
-#      - wordpress
+    depends_on:
+      - wordpress
     ports:
       - "443:443"
+    networks:
+      - inception
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - /home/${USER}/simple_docker_nginx_html/public/html:/var/www/
+      - wp-volume:/var/www/
+    env_file:
+      - .env
     restart: always
 ```
 
-Now we have done here (you can delete this repo)
+First in *services:* is our *nginx*, then the path of Dockerfile, also giving a name *nginx* and port. Remember that *nginx* builts faster than wordpress, thats why we need to wait for WordPress container to be built and start only after. 
+
+We add sections so that the container sees our config and our keys, and we also make sure to mount our /var/www - that will run nginx. Later we will take files from the WordPress directory.
+
+<a><img src="https://media.makeameme.org/created/time-to-relax-5001808360.jpg"></a>
+
+## MariaDB
+
+### Step 1: Dokerfile
+
+`cd ~/project/srcs`
+
+`vim requirements/mariadb/Dockerfile`
+
+```
+FROM alpine:3.16
+
+RUN apk update && apk add --no-cache mariadb mariadb-client
+
+RUN mkdir /var/run/mysqld; \
+    chmod 777 /var/run/mysqld; \
+    { echo '[mysqld]'; \
+      echo 'skip-host-cache'; \
+      echo 'skip-name-resolve'; \
+      echo 'bind-address=0.0.0.0'; \
+    } | tee  /etc/my.cnf.d/docker.cnf; \
+    sed -i "s|skip-networking|skip-networking=0|g" \
+      /etc/my.cnf.d/mariadb-server.cnf
+
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
+EXPOSE 3306
+
+USER mysql
+COPY tools/db.sh .
+ENTRYPOINT  ["sh", "db.sh"]
+CMD ["/usr/bin/mysqld", "--skip-log-error"]
+```
+
+Here we run the RUN instruction in which we install the mariadb and mariadb-client we need without caching. Next, in the same RUN we normalize our working configuration. We do this with one RUN because each RUN directive creates a new layer in the docker image, and it is better not to create extra RUNs unnecessarily. The tee command sends the output of echo to a file, and the sed command replaces lines in files by value. This way we set the minimum required set of settings without creating unnecessary configs inside one docker file.
+
+With the second layer we create a database from what we installed and configured on the previous layer. We indicate the path where the default database will be stored. Then we open the mariadb working port and switch to the mysql user created when installing the database.
+
+And finally, we launch the database under this user.
+
+### Step 2: MariaDB config file
+
+`vim requirements/mariadb/conf/create_db.sh`
+
+```
+#!bin/sh
+
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+
+        chown -R mysql:mysql /var/lib/mysql
+
+        # init database
+        mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm
+
+        tfile=`mktemp`
+        if [ ! -f "$tfile" ]; then
+                return 1
+        fi
+fi
+
+if [ ! -d "/var/lib/mysql/wordpress" ]; then
+
+        cat << EOF > /tmp/create_db.sql
+USE mysql;
+FLUSH PRIVILEGES;
+DELETE FROM     mysql.user WHERE User='';
+DROP DATABASE test;
+DELETE FROM mysql.db WHERE Db='test';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'rootpass';
+CREATE DATABASE wordpress CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER 'wpuser'@'%' IDENTIFIED by 'wppass';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';
+FLUSH PRIVILEGES;
+EOF
+        # run init.sql
+        /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql
+        rm -f /tmp/create_db.sql
+fi
+```
+
+The first block of code checks if mysql is running and if not, starts it. Checking in case something bad happens; in fact, our mysql must be installed and running, and this block is usually skipped.
+
+The second block checks whether a database named wordpress exists. Of course, we don’t have it, and, falling inside this block, we write the sql code to create this database into the file for sql queries. The code uses environment variables that we will pass from the env file. In the same block, we execute this code and delete the extra configuration file, skillfully covering our tracks.
+
+### Step 3: Call script in Dokerfile
+
+`vim requirements/mariadb/Dockerfile`
+
+```
+FROM alpine:3.16
+
+ARG DB_NAME \
+    DB_USER \
+    DB_PASS
+
+RUN apk update && apk add --no-cache mariadb mariadb-client
+
+RUN mkdir /var/run/mysqld; \
+    chmod 777 /var/run/mysqld; \
+    { echo '[mysqld]'; \
+      echo 'skip-host-cache'; \
+      echo 'skip-name-resolve'; \
+      echo 'bind-address=0.0.0.0'; \
+    } | tee  /etc/my.cnf.d/docker.cnf; \
+    sed -i "s|skip-networking|skip-networking=0|g" \
+      /etc/my.cnf.d/mariadb-server.cnf
+
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
+EXPOSE 3306
+
+COPY requirements/mariadb/conf/create_db.sh .
+RUN sh create_db.sh && rm create_db.sh
+USER mysql
+CMD ["/usr/bin/mysqld", "--skip-log-error"]
+```
+
+As you see we call it in script
+
+```
+COPY requirements/mariadb/conf/create_db.sh .
+RUN sh create_db.sh && rm create_db.sh
+```
+
+But for the script to work, we must pass environment variables to create the database. Environment variables are taken from the .env file; these are the same secrets that, as a rule, are stored separately from the repository code.
+
+```
+ARG DB_NAME \
+    DB_USER \
+    DB_PASS
+```
+
+Docker has two ways to pass environment variables to an image: via ARG and via ENV. Through ARG, those arguments are passed that will be used when building the image, and will not be used after it starts. Therefore, we will transfer all our secrets through the ARG, so that they do not hang around the already assembled image.
+
+Variables that will be in the environment of an already running container are passed through ENV. We will not use them for our tasks.
+
+<a><img src="https://i.imgflip.com/2kujgf.jpg"></a>
+
+### Step 4: Docker config for MariaDB
+
+`vim docker-compose.yml`
+
+```
+  mariadb:
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_ROOT: ${DB_ROOT}
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    volumes:
+      - db-volume:/var/lib/mysql
+    env_file:
+      - .env
+    restart: always
+```
+
+As we can see, our variables are passed to the ARG through the args section in the build section. They can only be passed here, because they are launched only during the build and are not present in the image, unlike ENVs, which are passed through the environment section already inside the service.
+
+Mariadb runs on port 3306, so this port must be open.
+
+### Step 5: Check MariaDB
+
+In order to check if everything worked out, we need to run the following command after starting the container:
+
+`docker exec -it mariadb mysql -u root`
+
+This will put us in the text environment of the database *MariaDB [(none)]>*
+
+Here we run `show databases;` command and you will see this
+
+```
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| wordpress          |
++--------------------+
+5 rows in set (0.001 sec)
+```
+
+At the bottom there must be a database we created with the name wordpress! If it is not there, then our script did not work correctly or did not work at all. This may be due to many reasons - the script file was not copied, the environment variables were not transferred, the wrong values were written in the .env file...
+
+But if everything is done correctly, then congratulations - we have successfully launched the database!
+
+We exit the environment using the exit command or Ctrl+D.
+
+## WordPress
+
+### Step 1: Again Dokerfile
+
+<a><img src="https://s.yimg.com/ny/api/res/1.2/NiuCf2JkvlZAz0aTNXbI7g--/YXBwaWQ9aGlnaGxhbmRlcjtoPTY2Ng--/https://media.zenfs.com/en-us/news.mashable/a6f793f75c83be84ab10eab5aeca37b0"></a>
+
+`vim requirements/wordpress/Dockerfile`
+
+```
+FROM alpine:3.16
+ARG PHP_VERSION=8 \
+    DB_NAME \
+    DB_USER \
+    DB_PASS
+RUN apk update && apk upgrade && apk add --no-cache \
+    php${PHP_VERSION} \
+    php${PHP_VERSION}-fpm \
+    php${PHP_VERSION}-mysqli \
+    php${PHP_VERSION}-json \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-openssl \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-zip \
+    php${PHP_VERSION}-redis \
+    wget \
+    unzip && \
+    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
+      /etc/php8/php-fpm.d/www.conf && \
+    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
+      /etc/php8/php-fpm.d/www.conf && \
+    sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
+      /etc/php8/php-fpm.d/www.conf && \
+    rm -f /var/cache/apk/*
+WORKDIR /var/www
+RUN wget https://wordpress.org/latest.zip && \
+    unzip latest.zip && \
+    cp -rf wordpress/* . && \
+    rm -rf wordpress latest.zip
+COPY ./requirements/wordpress/conf/wp-config-create.sh .
+RUN sh wp-config-create.sh && rm wp-config-create.sh && \
+    chmod -R 0777 wp-content/
+CMD ["/usr/sbin/php-fpm8", "-F"]
+```
+
+I will indicate the PHP version in a variable - a command line argument. Sets the variable instruction ARG. Also, using this instruction, I accept three arguments from our .env file with secrets - the database name, user name and password.
+
+The difference is that an ARG with parameters sets an environment variable with the passed parameter, while an ARG without parameters takes a parameter from the same variable in docker-compose.
+
+First, let's list the basic components: this is php, on which our wordpress runs, php-fpm for interacting with nginx and php-mysqli for interacting with mariadb.
+
+For the full operation of our WordPress, we will not skimp and load all the required modules, omitting the caching and additional modules. For the bonus part, we will also install the redis module. We’ll also download the wget package needed to download Wordpress itself, and the unzip package for unzipping the archive with downloaded Wordpress.
+
+CMD launches our installed php-fpm (attention: the version must match the installed one!).
+
+### Step 2: Docker config for WordPress
+
+`vim docker-compose.yml`
+
+```
+  wordpress:
+    build:
+      context: .
+      dockerfile: requirements/wordpress/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    volumes:
+      - wp-volume:/var/www/
+    env_file:
+      - .env
+    restart: always
+```
+
+The depends_on directive means that wordpress depends on mariadb and will not start until the container with the database is built. The fastest of our containers will be nginx - due to its light weight, it will be assembled and launched first. But the database and CMS take approximately the same amount of time to assemble, and to prevent wordpress from starting to install on a database that has not yet been deployed, you will need to specify this dependency. Next, we will transfer the same “secrets” stored in the .env file to the container.
+
+### Step 3: Volum & Network
+
+Nginx and wordpress should have a common section for data exchange. The assignment also requires a partition to store the database. And all this should be stored in our /home//data. You can mount the same folder here and there, but for convenience, let’s create a partition by specifying the path to its folder:
+
+```
+volumes:
+  wp-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/wordpress
+
+  db-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/mariadb
+```
+
+Next, according to the task, we must combine our containers into a single network. In fact, all containers that are registered within one docker-compose - the file or configuration of which are located in the same folder - are automatically combined into a common network. However, the name of the network is not set by us. But turning to the network is sometimes useful.
+
+In order for our network to be accessible to us by name, let's create, in addition to the default one, our own network. It is created extremely simply:
+
+```
+networks:
+    inception:
+        driver: bridge
+```
+
+The full file you can see in this repo.
+
+### Step 4: Data
+
+`vim requirements/wordpress/tools/make_dir.sh`
+
+```
+#!/bin/bash
+if [ ! -d "/home/${USER}/data" ]; then
+        mkdir ~/data
+        mkdir ~/data/mariadb
+        mkdir ~/data/wordpress
+fi
+```
+
+This code checks for the presence of the data folder in the user's folder, and if not, creates all the necessary folder configurations.
+
+Let's give him permission and if you want you can run it and check `ls ~/data/`
+
+`chmod +x requirements/wordpress/tools/make_dir.sh`
+
+### Step 5: WordPress config file
+
+`vim requirements/wordpress/conf/wp-config-create.sh`
+
+```
+#!bin/sh
+if [ ! -f "/var/www/wp-config.php" ]; then
+cat << EOF > /var/www/wp-config.php
+<?php
+define( 'DB_NAME', 'wordpress' );
+define( 'DB_USER', 'wpuser' );
+define( 'DB_PASSWORD', 'wppass' );
+define( 'DB_HOST', 'mariadb' );
+define( 'DB_CHARSET', 'utf8' );
+define( 'DB_COLLATE', '' );
+define('FS_METHOD','direct');
+\$table_prefix = 'wp_';
+define( 'WP_DEBUG', false );
+if ( ! defined( 'ABSPATH' ) ) {
+define( 'ABSPATH', __DIR__ . '/' );}
+define( 'WP_REDIS_HOST', 'redis' );
+define( 'WP_REDIS_PORT', 6379 );
+define( 'WP_REDIS_TIMEOUT', 1 );
+define( 'WP_REDIS_READ_TIMEOUT', 1 );
+define( 'WP_REDIS_DATABASE', 0 );
+require_once ABSPATH . 'wp-settings.php';
+EOF
+fi
+```
+
+Let's pay attention to $table_prefix = 'wp_'; To prevent an empty string from being written to $table_prefix (since we don’t have such a variable in bash), we must escape the string with a backslash - “\”.
+
+Some settings regarding redis will be useful to us only in the bonus part. Basically, they won’t bother us either.
+
+#### Auto user
+
+Now we need to create a script that will write our wordpress dates from .env, and when we run our localhost it will show us our domain page and not WordPress-admin register
+
+```
+wp core install --url=localhost --title="my insception" --admin_user=${WP_ADMIN_USR} --admin_password=${WP_ADMIN_PWD} --admin_email=${WP_ADMIN_EMAIL}
+if wp user get Johnik >/dev/null 2>&1; then
+    echo "User Johnik exists."
+else
+   wp user create ${WP_USR} ${WP_EMAIL} --role=subscriber --user_pass=${WP_PWD}
+fi
+wp user update "intra_login" --user_pass="${WP_PWD}" --skip-email
+if wp user get "intra_login" >/dev/null 2>&1; then
+    echo "Logged in successfully as root."
+else
+    echo "Login failed. Please check your root credentials."
+fi
+wp theme activate twentytwentytwo
+/usr/sbin/php-fpm8 -F
+```
+
+## Finish
+
+Now lets run our Makefil for first time and check if all works? If yes run those commands and check the outputs:
+
+`docker exec -it wordpress ps aux | grep 'php'`
+
+```
+1 root      0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
+9 nobody    0:00 {php-fpm8} php-fpm: pool www
+10 nobody    0:00 {php-fpm8} php-fpm: pool www
+```
+
+`docker exec -it wordpress php -v`
+
+```
+PHP 8.0.22 (cli) (built: Aug  5 2022 23:54:32) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v4.0.22, Copyright (c) Zend Technologies
+```
+
+`docker exec -it wordpress php -m`
+
+```
+[PHP Modules]
+Core
+curl
+date
+dom
+exif
+fileinfo
+filter
+hash
+json
+libxml
+mbstring
+mysqli
+mysqlnd
+openssl
+pcre
+readline
+Reflection
+SPL
+standard
+xml
+zip
+zlib
+[Zend Modules]
+```
+
+Perfect we have finished our project
+<a><img src="https://media.makeameme.org/created/voila.jpg"></a>
