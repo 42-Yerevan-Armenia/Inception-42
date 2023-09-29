@@ -47,11 +47,11 @@ Once we know how they work, it is a good idea to see all the advantages we get f
 ## Installation
 At the time of writing, the latest stable version of [debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on [debian](https://download.g0tmi1k.com/iso/Debian/Debian-11/debian-11.6.0-amd64-netinst.iso) 11, [here](https://www.youtube.com/watch?v=poCSq_0OmjE) is the link of 11 instalation guide. I use system with
 
-    - RAM 4GB
-    - CPU 4
-    - Memory 50+GB
-    - username with your intra_login
-    - Sowtware only SSH
+  - RAM 4GB
+  - CPU 4
+  - Memory 50+GB
+  - username with your intra_login
+  - Sowtware only SSH
 
 ### Step 1: Configuring SSH
 
