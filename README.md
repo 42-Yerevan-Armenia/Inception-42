@@ -45,7 +45,8 @@ Once we know how they work, it is a good idea to see all the advantages we get f
 </ul>
 
 ## Installation
-At the time of writing, the latest stable version of [Debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on [Debian](https://download.g0tmi1k.com/iso/Debian/Debian-11/debian-11.6.0-amd64-netinst.iso) 11, [here](https://www.youtube.com/watch?v=poCSq_0OmjE) is the link of 11 instalation guide. I use system with
+At the time of writing, the latest stable version of [debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on [debian](https://download.g0tmi1k.com/iso/Debian/Debian-11/debian-11.6.0-amd64-netinst.iso) 11, [here](https://www.youtube.com/watch?v=poCSq_0OmjE) is the link of 11 instalation guide. I use system with
+
     - RAM 4GB
     - CPU 4
     - Memory 50+GB
@@ -467,10 +468,47 @@ This way we run nginx directly and not in daemon mode. Daemon mode is a launch m
 
 Let's add config file `vim conf/nginx.conf`
 
+Since we have already trained with a test container, let’s take a similar configuration, changing it for php so that it allows reading not html, but php wordpress files. We will no longer need port 80, since according to the guide we can only use port 443. But at the first stage, we will comment out the sections responsible for php and temporarily add html support (for testing):
 
+```
+server {
+    listen      443 ssl;
+    server_name  <intra_login>.42.fr www.<intra_login>.42.fr;
+    root    /var/www/;
+    index index.php index.html;
+    ssl_certificate     /etc/nginx/ssl/<intra_login>.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/<intra_login>.42.fr.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_timeout 10m;
+    keepalive_timeout 70;
+    location / {
+        try_files $uri /index.php?$args /index.html;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache';
+        if_modified_since off;
+        expires off;
+        etag off;
+    }
+#    location ~ \.php$ {
+#        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+#        fastcgi_pass wordpress:9000;
+#        fastcgi_index index.php;
+#        include fastcgi_params;
+#        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+#        fastcgi_param PATH_INFO $fastcgi_path_info;
+#    }
+}
+```
 
+Port 9000 is exactly the port of our php-fpm, through which the connection between php and nginx is made. And wordpress in this case is the name of our container with wordpress.
+
+Also let's copy our keys here `cp ~/project/srcs/requirements/tools/* ~/project/srcs/requirements/nginx/tools/`
 
 ### Step 4: Docker configuration
+
+Docker-compose is a system for launching Docker containers; one might say, it is a kind of add-on to Docker. If in docker files we specified what software to install inside one container environment, then with docker-compose we can control the launch of many similar containers at once, launching them with one command.
+
+Let's modify our file `cd ../../ && vim docker-compose.yml`
 
 ```
 version: '3'
