@@ -16,6 +16,14 @@
     - [Step 3: Geting certificates](#step-3-geting-certificates)
     - [Step 4: Test project](#step-3-test-project)
         - [Test https](#test-https)
+4. [Makefile](#makefile)
+4. [Nginx](#nginx)
+    - [Step 1: What is Docker?](#what-is-docker)
+    - [Step 2: Creation of Dokerfile](#creation-of-dockerfile)
+    - [Step 3: Config file](#config-file)
+    - [Step 4: Docker configuration](#docker-configuration)
+
+
 
 ## Introduction
 You will create your first machine in VirtualBox (or UTM if you can’t use VirtualBox) under specific instructions. Then, at the end of this project, you will be able to set up your own operating system while implementing strict rules.
@@ -37,7 +45,7 @@ Once we know how they work, it is a good idea to see all the advantages we get f
 </ul>
 
 ## Installation
-At the time of writing, the latest stable version of [Debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on 11, [here](https://www.youtube.com/watch?v=poCSq_0OmjE) is the link of 11 instalation guide. I use system with
+At the time of writing, the latest stable version of [Debian](https://www.debian.org/) is *Debian 12 bookworm*, but i have done on [Debian](https://download.g0tmi1k.com/iso/Debian/Debian-11/debian-11.6.0-amd64-netinst.iso) 11, [here](https://www.youtube.com/watch?v=poCSq_0OmjE) is the link of 11 instalation guide. I use system with
     - RAM 4GB
     - CPU 4
     - Memory 50+GB
@@ -356,7 +364,132 @@ If you see this, don't worry because our own certificat don't have security cual
 
 Max we can do here just *Advanced ...* + *Accept the Risk and Contine*
 
-Sometimes it will didn't work, don't worry after some manipulation and magic it will work, now we have done here (you can delete this repo)
+Sometimes it will didn't work, don't worry after some manipulation and magic it will work.
 
 `docker-compose down`
 
+## Makefile
+
+Now let's create our makefile
+
+`cd ~/project/ && vim Makefile`
+
+```
+name = inception
+all:
+	@printf "Launch configuration ${name}...\n"
+	@bash srcs/requirements/wordpress/tools/make_dir.sh
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+
+build:
+	@printf "Building configuration ${name}...\n"
+	@bash srcs/requirements/wordpress/tools/make_dir.sh
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+
+down:
+	@printf "Stopping configuration ${name}...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
+
+re: clean all
+
+clean: down
+	@printf "Cleaning configuration ${name}...\n"
+	@docker system prune -a
+	@sudo rm -rf ~/data/mariadb/*
+	@sudo rm -rf ~/data/wordpress/*
+
+fclean:
+	@printf "Total clean of all configurations docker\n"
+	@docker stop $$(docker ps -qa)
+	@docker system prune --all --force --volumes
+	@docker network prune --force
+	@docker volume prune --force
+	@sudo rm -rf ~/data/wordpress/*
+	@sudo rm -rf ~/data/mariadb/*
+
+.PHONY	: all build down re clean fclean
+```
+
+Start of our docker we do by `docker-compose up -d` command for *docker-compose.yml* config file. Here we use -f flag which takes the path of congif file.
+
+Construction of container we do by `docker-compose up -d --build` command.
+
+And we stop our docker by `docker-compose down` command.
+
+`docker system prune --a` Remove all unused images not just dangling ones.
+
+And finly for total fclean first we stop out container by `docker stop $$(docker ps -qa)` and delete by *--force* flag everything, also network, volume and dates.
+
+## Nginx
+
+<a>
+    <img src="https://github.com/codesshaman/inception/blob/main/media/nginx_deploy/step_1.png?raw=true">
+</a>
+
+Okey now let's take what it need
+
+| Soft | For what |  Port |
+| :----------: | :---------------------------: | :----: |
+| Ngninx |Proxying web server | 443 |
+| PHP | Scripting language for the web | - |
+| PHP-Fpm | A set of libraries for FastCGI API | 9000 |
+| Wordpress | Content Management System | - |
+| MariaDB | Relational database | 3306 |
+
+### Step 1: What is Docker?
+
+A Docker image is a set of environments necessary to run certain software. It differs from virtualbox-type emulators in that the container does not contain a full-fledged operating system, the container uses the Linux kernel and not everything is placed inside it, but only the programs and libraries necessary to run the software. Thus, the container weighs significantly less than the emulated system x20.
+
+### Step 2: Creation of Dockerfile
+
+In Docker, a special file called Dockerfile is responsible for the configuration. It specifies a set of software that we want to deploy inside this container. Let's go to `cd ~/project/srcs/requirements/nginx/`
+
+`vim Dockerfile`
+
+```
+FROM alpine:3.16
+RUN	apk update && apk upgrade && apk add --no-cache nginx
+EXPOSE 443
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+We write in it the *FROM* instruction, which shows from which image we will deploy our container. As we remember from *subject* we can't use labels like *alpine:latest*, we must go to the official sites and take the latest or earlier version like `alpine:3.16` or `debian:buster`.
+
+Next, we specify what software and how we want to install it inside the container. It is not possible to run an application directly from RUN. In some cases this can be done through a script, but in general the CMD and ENTRYPOINT instructions are used to run it. RUN creates a static layer, changes inside which are written to the image, but do not cause anything, CMD and ENTRYPOINT run something, but DO NOT write changes to the image. Therefore, you should not execute scripts with them, the result of which must be “put” into the final image or partition. There is RUN for this. We can say that changes made through RUN are static. For example, installing packages on a system like ours.
+
+Then we need to open the port 443 on which the container will exchange traffic.
+
+In the end we have to run the installed configuration. To do this, use the CMD instruction.
+
+This way we run nginx directly and not in daemon mode. Daemon mode is a launch mode in which the application starts in the background or, in Windows parlance, as a service. For ease of debugging, we disable this mode and receive all nginx logs directly into the tty of the container.
+
+### Step 3: Config file
+
+Let's add config file `vim conf/nginx.conf`
+
+
+
+
+### Step 4: Docker configuration
+
+```
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+#    depends_on:
+#      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - ./requirements/nginx/conf/:/etc/nginx/http.d/
+      - ./requirements/nginx/tools:/etc/nginx/ssl/
+      - /home/${USER}/simple_docker_nginx_html/public/html:/var/www/
+    restart: always
+```
+
+Now we have done here (you can delete this repo)
