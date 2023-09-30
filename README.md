@@ -10,30 +10,30 @@
     - [Step 4: Configuring *user*](#step-4-configuring-user)
     - [Step 5: Configuring *sudo*](#step-5-configuring-sudo)
     - [Step 6: Make directories](#step-6-make-directories)
-3. [Install Certificate](#install-certificat)
+3. [Install Certificate](#install-certificate)
     - [Step 1: Mkcert](#step-1-mkcert)
     - [Step 2: Hostname](#step-2-hostname)
     - [Step 3: Geting certificates](#step-3-geting-certificates)
-    - [Step 4: Test project](#step-3-test-project)
+    - [Step 4: Test project](#step-4-test-project)
         - [Test https](#test-https)
 4. [Makefile](#makefile)
 5. [Nginx](#nginx)
-    - [Step 1: What is Docker?](#what-is-docker)
-    - [Step 2: Creation of Dokerfile](#creation-of-dockerfile)
-    - [Step 3: Nginx config file](#nginx-config-file)
-    - [Step 4: Docker config for Nginx](#docker-config-for-nginx)
+    - [Step 1: What is Docker?](#step-1-what-is-docker)
+    - [Step 2: Creation of Dokerfile](#step-2-creation-of-dockerfile)
+    - [Step 3: Nginx config file](#step-3-nginx-config-file)
+    - [Step 4: Docker config for Nginx](#step-4-docker-config-for-nginx)
 6. [MariaDB](#mariadb)
-    - [Step 1: Dokerfile](#dockerfile)
-    - [Step 2: MariaDB config file](#mariadb-config-file)
-    - [Step 3: Call script in Dokerfile](#call-script-in-dockerfile)
-    - [Step 4: Docker config for MariaDB](#docker-config-for-mariadb)
-    - [Step 5: Check MariaDB](#check-mariadb)
+    - [Step 1: Dockerfile](#step-1-dockerfile)
+    - [Step 2: MariaDB config file](#step-2-mariadb-config-file)
+    - [Step 3: Call script in Dockerfile](#step-3-call-script-in-dockerfile)
+    - [Step 4: Docker config for MariaDB](#step-4-docker-config-for-mariadb)
+    - [Step 5: Check MariaDB](#step-5-check-mariadb)
 7. [WordPress](#wordpress)
-    - [Step 1: Again Dokerfile](#again-dockerfile)
-    - [Step 2: Docker config for WordPress](#docker-config-for-wordpress)
-    - [Step 3: Volum & Network](#volume--network)
-    - [Step 4: Data](#data)
-    - [Step 5: WordPress config file](#wordpress-config-file)
+    - [Step 1: Again Dockerfile](#step-1-again-dockerfile)
+    - [Step 2: Docker config for WordPress](#step-2-docker-config-for-wordpress)
+    - [Step 3: Volume & Network](#step-3-volume--network)
+    - [Step 4: Data](#step-4-data)
+    - [Step 5: WordPress config file](#step-5-wordpress-config-file)
         - [Auto user](#auto-user)
 8. [Finish](#finish)
 
@@ -65,6 +65,8 @@ At the time of writing, the latest stable version of [debian](https://www.debian
   - Memory 50+GB
   - username with your intra_login
   - Sowtware only SSH
+
+<a><img src="https://lucloi.vn/wp-content/uploads/2019/12/maxresdefault-58.jpg"></a>
 
 ### Step 1: Configuring SSH
 
@@ -134,6 +136,8 @@ For first let's install other softs that we need
 ```
 apt install -y sudo docker docker-compose make openbox xinit kitty firefox-esr
 ```
+
+<a><img src="https://media.makeameme.org/created/and-then-we-9544377ac5.jpg" weith=200px, height=200px></a>
 
 ### Step 4: Configuring *user* 
 
@@ -223,6 +227,8 @@ echo ".env" >> project/srcs/requirements/wordpress/.dockerignore
 
 Run it `sh make_directories.sh`
 
+<a><img src="https://www.irishnews.com/picturesarchive/irishnews/irishnews/2017/09/02/203021043-b1845cb1-4309-450d-b26e-fb45979758b7.jpg" weith=400px, height=400px></a>
+
 ## Install Certificate
 
 ### Step 1: Mkcert
@@ -278,6 +284,8 @@ Now let's rename files for *nginx*
 `mv <username>.42.fr-key.pem <username>.42.fr.key`
 
 `mv <username>.42.fr.pem <username>.42.fr.crt`
+
+<a><img stc="https://media.musclegrid.io/glensfallskarate.com/uploads/2020/01/21040811/jackie-chan-wait-what-meme.jpg"></a>
 
 ### Step 4: Test project
 
@@ -543,11 +551,11 @@ First in *services:* is our *nginx*, then the path of Dockerfile, also giving a 
 
 We add sections so that the container sees our config and our keys, and we also make sure to mount our /var/www - that will run nginx. Later we will take files from the WordPress directory.
 
-<a><img src="https://media.makeameme.org/created/time-to-relax-5001808360.jpg"></a>
+<a><img src="https://media.makeameme.org/created/time-to-relax-5001808360.jpg" weith=200px, height=200px></a>
 
 ## MariaDB
 
-### Step 1: Dokerfile
+### Step 1: Dockerfile
 
 `cd ~/project/srcs`
 
@@ -629,7 +637,7 @@ The first block of code checks if mysql is running and if not, starts it. Checki
 
 The second block checks whether a database named wordpress exists. Of course, we don’t have it, and, falling inside this block, we write the sql code to create this database into the file for sql queries. The code uses environment variables that we will pass from the env file. In the same block, we execute this code and delete the extra configuration file, skillfully covering our tracks.
 
-### Step 3: Call script in Dokerfile
+### Step 3: Call script in Dockerfile
 
 `vim requirements/mariadb/Dockerfile`
 
@@ -681,7 +689,7 @@ Docker has two ways to pass environment variables to an image: via ARG and via E
 
 Variables that will be in the environment of an already running container are passed through ENV. We will not use them for our tasks.
 
-<a><img src="https://i.imgflip.com/2kujgf.jpg"></a>
+<a><img src="https://i.imgflip.com/2kujgf.jpg" weith=200px, height=200px></a>
 
 ### Step 4: Docker config for MariaDB
 
@@ -744,9 +752,9 @@ We exit the environment using the exit command or Ctrl+D.
 
 ## WordPress
 
-### Step 1: Again Dokerfile
+### Step 1: Again Dockerfile
 
-<a><img src="https://s.yimg.com/ny/api/res/1.2/NiuCf2JkvlZAz0aTNXbI7g--/YXBwaWQ9aGlnaGxhbmRlcjtoPTY2Ng--/https://media.zenfs.com/en-us/news.mashable/a6f793f75c83be84ab10eab5aeca37b0"></a>
+<a><img src="https://s.yimg.com/ny/api/res/1.2/NiuCf2JkvlZAz0aTNXbI7g--/YXBwaWQ9aGlnaGxhbmRlcjtoPTY2Ng--/https://media.zenfs.com/en-us/news.mashable/a6f793f75c83be84ab10eab5aeca37b0" weith=200px, height=200px></a>
 
 `vim requirements/wordpress/Dockerfile`
 
@@ -827,7 +835,7 @@ CMD launches our installed php-fpm (attention: the version must match the instal
 
 The depends_on directive means that wordpress depends on mariadb and will not start until the container with the database is built. The fastest of our containers will be nginx - due to its light weight, it will be assembled and launched first. But the database and CMS take approximately the same amount of time to assemble, and to prevent wordpress from starting to install on a database that has not yet been deployed, you will need to specify this dependency. Next, we will transfer the same “secrets” stored in the .env file to the container.
 
-### Step 3: Volum & Network
+### Step 3: Volume & Network
 
 Nginx and wordpress should have a common section for data exchange. The assignment also requires a partition to store the database. And all this should be stored in our /home//data. You can mount the same folder here and there, but for convenience, let’s create a partition by specifying the path to its folder:
 
@@ -982,4 +990,5 @@ zlib
 ```
 
 Perfect we have finished our project
-<a><img src="https://media.makeameme.org/created/voila.jpg"></a>
+
+<a><img src="https://media.makeameme.org/created/voila.jpg" weith=200px, height=200px></a>
