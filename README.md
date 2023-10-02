@@ -277,7 +277,7 @@ Let's add a new one
 
 `sudo vim /etc/hosts`
 
-Add `<username>.42.fr>` next to localhost
+Add `<username>.42.fr` next to localhost
 
 ### Step 3: Geting certificates
 
@@ -287,13 +287,13 @@ First let's go to
 
 For get it let's run our *mkcert*
 
-`mkcert <username>>.42.fr`
+`mkcert <username>.42.fr`
 
 Now let's rename files for *nginx*
 
-`mv <username>>.42.fr-key.pem <username>>.42.fr.key`
+`mv <username>.42.fr-key.pem <username>.42.fr.key`
 
-`mv <username>>.42.fr.pem <username>>.42.fr.crt`
+`mv <username>.42.fr.pem <username>.42.fr.crt`
 
 <a><img stc="https://media.musclegrid.io/glensfallskarate.com/uploads/2020/01/21040811/jackie-chan-wait-what-meme.jpg"></a>
 
