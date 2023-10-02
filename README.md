@@ -172,7 +172,7 @@ Verify whether user was successfully added to *sudo* and *docker* group.
 ###
 Add user to root privilege
 
-`<username>> ALL=(ALL:ALL) ALL`
+`<username> ALL=(ALL:ALL) ALL`
 
 `reboot` for changes to take effect.
 
