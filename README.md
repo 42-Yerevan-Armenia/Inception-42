@@ -153,7 +153,7 @@ apt install -y sudo docker docker-compose make openbox xinit kitty firefox-esr
 
 Add user to *sudo* and *docker* group.
 
-`usermod -aG sudo <username>>` `usermod -aG docker <username>>`
+`usermod -aG sudo <username>` `usermod -aG docker <username>`
 
 Verify whether user was successfully added to *sudo* and *docker* group.
 
