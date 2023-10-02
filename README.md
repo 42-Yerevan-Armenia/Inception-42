@@ -178,7 +178,7 @@ Add user to root privilege
 
 Switch to user, from now we will work with sudo user.
 
-`su user`
+`su <username>`
 
 `cd ~/`
 
