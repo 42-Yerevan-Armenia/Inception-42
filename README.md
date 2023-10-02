@@ -61,7 +61,7 @@ At the time of writing, the latest stable version of [debian](https://www.debian
   - RAM 4GB
   - CPU 4
   - Memory 50+GB
-  - username with your intra_login
+  - username with your username
   - Sowtware only SSH
 
 <a><img src="https://lucloi.vn/wp-content/uploads/2019/12/maxresdefault-58.jpg"></a>
@@ -76,19 +76,19 @@ Install *vim*, `apt install vim`
 
 Set up SSH using Port 42
 
->13 Port 42
+>15 Port 42
 
 Enable SSH login as *root*
 
->32 PermitRootLogin yes
+>34 PermitRootLogin yes
 
 Turning off key connection
 
->17PubkeyAuthentication no
+>39 PubkeyAuthentication no
 
 Enable connection with password
 
->36PasswordAuthentication yes
+>58 PasswordAuthentication yes
 
 Check SSH status.
 `service ssh status`
@@ -126,7 +126,19 @@ Restart your VM.
 
 SSH into your VM using Port 42. Type the line below into Terminal in your physicall machin.
 ```
-ssh <username>@<ip-address> -p 42
+ssh <username>>@<ip-address> -p 42
+```
+
+If you see this message don't scare, it just says that the Port is already registered and we need just delete it and try again
+```
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+```
+
+Delete it from here
+```
+vim /Users/<username>>/.ssh/known_hosts
 ```
 
 For first let's install other softs that we need
@@ -141,7 +153,7 @@ apt install -y sudo docker docker-compose make openbox xinit kitty firefox-esr
 
 Add user to *sudo* and *docker* group.
 
-`usermod -aG sudo docker <username>`
+`usermod -aG sudo <username>>` `usermod -aG docker <username>>`
 
 Verify whether user was successfully added to *sudo* and *docker* group.
 
@@ -160,13 +172,13 @@ Verify whether user was successfully added to *sudo* and *docker* group.
 ###
 Add user to root privilege
 
-`<username> ALL=(ALL:ALL) ALL`
+`<username>> ALL=(ALL:ALL) ALL`
 
 `reboot` for changes to take effect.
 
-Switch tu user, from now we will work with sudo user.
+Switch to user, from now we will work with sudo user.
 
-`su -`
+`su user`
 
 `cd ~/`
 
@@ -182,9 +194,9 @@ touch project/Makefile
 mkdir project/srcs/requirements
 touch project/srcs/docker-compose.yml
 touch project/srcs/.env
-echo "DOMAIN_NAME=<username>.42.fr" > project/srcs/.env
-echo "CERT_=./requirements/tools/<username>.42.fr.crt" >> project/srcs/.env
-echo "KEY_=./requirements/tools/<username>.42.fr.key" >> project/srcs/.env
+echo "DOMAIN_NAME=<username>>.42.fr" > project/srcs/.env
+echo "CERT_=./requirements/tools/<username>>.42.fr.crt" >> project/srcs/.env
+echo "KEY_=./requirements/tools/<username>>.42.fr.key" >> project/srcs/.env
 echo "DB_NAME=wordpress" >> project/srcs/.env
 echo "DB_ROOT=rootpass" >> project/srcs/.env
 echo "DB_USER=wpuser" >> project/srcs/.env
@@ -265,7 +277,7 @@ Let's add a new one
 
 `sudo vim /etc/hosts`
 
-Add `<username.42.fr>` next to localhost
+Add `<username>.42.fr>` next to localhost
 
 ### Step 3: Geting certificates
 
@@ -275,13 +287,13 @@ First let's go to
 
 For get it let's run our *mkcert*
 
-`mkcert <username>.42.fr`
+`mkcert <username>>.42.fr`
 
 Now let's rename files for *nginx*
 
-`mv <username>.42.fr-key.pem <username>.42.fr.key`
+`mv <username>>.42.fr-key.pem <username>>.42.fr.key`
 
-`mv <username>.42.fr.pem <username>.42.fr.crt`
+`mv <username>>.42.fr.pem <username>>.42.fr.crt`
 
 <a><img stc="https://media.musclegrid.io/glensfallskarate.com/uploads/2020/01/21040811/jackie-chan-wait-what-meme.jpg"></a>
 
@@ -310,7 +322,7 @@ You can turn it off with *Ctrl + C*
 
 Now let's change HTTP to HTTPS
 
-`~/simple_docker_nginx_html/nginx/conf.d/nginx.conf`
+`vim ~/simple_docker_nginx_html/nginx/conf.d/nginx.conf`
 
 Clear it and add this
 
@@ -319,13 +331,13 @@ server {
 
     listen      80;
     listen      443 ssl;
-    server_name  <username.42.fr www.<username.42.fr;
+    server_name  <username>.42.fr www.<username>.42.fr;
     root    /var/www/public/html;
     #if ($scheme = 'http') {
-    #    return 301 https://<username.42.fr$request_uri;
+    #    return 301 https://<username>.42.fr$request_uri;
     #}
-    ssl_certificate     /etc/nginx/ssl/<username.42.fr.crt;
-    ssl_certificate_key /etc/nginx/ssl/<username.42.fr.key;
+    ssl_certificate     /etc/nginx/ssl/<username>.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/<username>.42.fr.key;
     ssl_protocols            TLSv1.2 TLSv1.3;
     ssl_session_timeout 10m;
     keepalive_timeout 70;
@@ -341,7 +353,7 @@ Now let's back and stop container
 
 Then open our docker and add in volumes the key
 
-`docker-compose.yml`
+`vim docker-compose.yml`
 
 `- /home/${USER}/project/srcs/requirements/tools:/etc/nginx/ssl`
 
@@ -482,11 +494,11 @@ Since we have already trained with a test container, let’s take a similar conf
 ```
 server {
     listen      443 ssl;
-    server_name  <intra_login>.42.fr www.<intra_login>.42.fr;
+    server_name  <username>>.42.fr www.<username>>.42.fr;
     root    /var/www/;
     index index.php index.html;
-    ssl_certificate     /etc/nginx/ssl/<intra_login>.42.fr.crt;
-    ssl_certificate_key /etc/nginx/ssl/<intra_login>.42.fr.key;
+    ssl_certificate     /etc/nginx/ssl/<username>>.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/<username>>.42.fr.key;
     ssl_protocols       TLSv1.2 TLSv1.3;
     ssl_session_timeout 10m;
     keepalive_timeout 70;
@@ -928,8 +940,8 @@ if wp user get Johnik >/dev/null 2>&1; then
 else
    wp user create ${WP_USR} ${WP_EMAIL} --role=subscriber --user_pass=${WP_PWD}
 fi
-wp user update "intra_login" --user_pass="${WP_PWD}" --skip-email
-if wp user get "intra_login" >/dev/null 2>&1; then
+wp user update "username" --user_pass="${WP_PWD}" --skip-email
+if wp user get "username" >/dev/null 2>&1; then
     echo "Logged in successfully as root."
 else
     echo "Login failed. Please check your root credentials."
