@@ -971,7 +971,7 @@ WP_PWD=1234
 
 ### Step 6: Nginx config file
 
-`requirements/nginx/conf/nginx.conf`
+`vim requirements/nginx/conf/nginx.conf`
 ```
 server {
     listen      443 ssl;
