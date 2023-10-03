@@ -638,10 +638,10 @@ DELETE FROM     mysql.user WHERE User='';
 DROP DATABASE test;
 DELETE FROM mysql.db WHERE Db='test';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'rootpass';
-CREATE DATABASE wordpress CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER 'wpuser'@'%' IDENTIFIED by 'wppass';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
+CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
+GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
         # run init.sql
@@ -915,9 +915,9 @@ Let's give him permission and if you want you can run it and check `ls ~/data/`
 if [ ! -f "/var/www/wp-config.php" ]; then
 cat << EOF > /var/www/wp-config.php
 <?php
-define( 'DB_NAME', 'wordpress' );
-define( 'DB_USER', 'wpuser' );
-define( 'DB_PASSWORD', 'wppass' );
+define( 'DB_NAME', '${DB_NAME}' );
+define( 'DB_USER', '${DB_USER}' );
+define( 'DB_PASSWORD', '${DB_PASS}' );
 define( 'DB_HOST', 'mariadb' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
@@ -977,11 +977,11 @@ WP_PWD=1234
 ```
 server {
     listen      443 ssl;
-    server_name  <username>.42.fr www.<username>.42.fr;
+    server_name arakhurs.42.fr www.arakhurs.42.fr;
     root    /var/www/;
     index index.php;
-    ssl_certificate     /etc/nginx/ssl/<username>.42.fr.crt;
-    ssl_certificate_key /etc/nginx/ssl/<username>.42.fr.key;
+    ssl_certificate     /etc/nginx/ssl/arakhurs.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/arakhurs.42.fr.key;
     ssl_protocols       TLSv1.2 TLSv1.3;
     ssl_session_timeout 10m;
     keepalive_timeout 70;
