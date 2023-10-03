@@ -770,6 +770,8 @@ But if everything is done correctly, then congratulations - we have successfully
 
 We exit the environment using the exit command or Ctrl+D.
 
+`docker-compose down && cd ../../`
+
 ## WordPress
 
 ### Step 1: Again Dockerfile
@@ -844,8 +846,6 @@ CMD launches our installed php-fpm (attention: the version must match the instal
     container_name: wordpress
     depends_on:
       - mariadb
-    networks:
-      - inception
     volumes:
       - wp-volume:/var/www/
     env_file:
@@ -965,7 +965,6 @@ wp theme activate twentytwentytwo
 Now lets run our Makefil for first time and check if all works? If yes run those commands and check the outputs:
 
 `docker exec -it wordpress ps aux | grep 'php'`
-
 ```
 1 root      0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
 9 nobody    0:00 {php-fpm8} php-fpm: pool www
@@ -973,7 +972,6 @@ Now lets run our Makefil for first time and check if all works? If yes run those
 ```
 
 `docker exec -it wordpress php -v`
-
 ```
 PHP 8.0.22 (cli) (built: Aug  5 2022 23:54:32) ( NTS )
 Copyright (c) The PHP Group
@@ -981,7 +979,6 @@ Zend Engine v4.0.22, Copyright (c) Zend Technologies
 ```
 
 `docker exec -it wordpress php -m`
-
 ```
 [PHP Modules]
 Core
@@ -1007,6 +1004,15 @@ xml
 zip
 zlib
 [Zend Modules]
+```
+
+`cd srcs && docker-compose ps`
+```
+  Name                 Command               State           Ports
+---------------------------------------------------------------------------
+mariadb     /usr/bin/mysqld --skip-log ...   Up      0.0.0.0:3306->3306/tcp
+nginx       nginx -g daemon off;             Up      0.0.0.0:443->443/tcp
+wordpress   /usr/sbin/php-fpm8 -F            Up
 ```
 
 Perfect we have finished our project
