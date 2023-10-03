@@ -942,7 +942,7 @@ Some settings regarding redis will be useful to us only in the bonus part. Basic
 
 #### Auto user
 
-Now we need to create a script that will write our wordpress dates from .env, and when we run our localhost it will show us our domain page and not WordPress-admin register
+Now we need to create a script that will write our wordpress dates from .env, and when we run our localhost it will show us our domain page and not WordPress-admin register, also don't forget to add your data to .env
 
 ```
 wp core install --url=localhost --title="my insception" --admin_user=${WP_ADMIN_USR} --admin_password=${WP_ADMIN_PWD} --admin_email=${WP_ADMIN_EMAIL}
@@ -959,6 +959,16 @@ else
 fi
 wp theme activate twentytwentytwo
 /usr/sbin/php-fpm8 -F
+```
+
+```
+WP_TITLE=Inception
+WP_ADMIN_USR=<username>
+WP_ADMIN_PWD=1234
+WP_ADMIN_EMAIL=<username>@42.fr.com
+WP_USR=user42
+WP_EMAIL=user42@42.fr
+WP_PWD=1234
 ```
 
 ### Step 6: Nginx config file
