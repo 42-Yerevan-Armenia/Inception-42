@@ -33,6 +33,7 @@
     - [Step 4: Data](#step-4-data)
     - [Step 5: WordPress config file](#step-5-wordpress-config-file)
         - [Auto user](#auto-user)
+    - [Step 6: Nginx config file](#step-6-nginx-config-file)
 7. [Finish](#finish)
 
 
@@ -958,6 +959,39 @@ else
 fi
 wp theme activate twentytwentytwo
 /usr/sbin/php-fpm8 -F
+```
+
+### Step 6: Nginx config file
+
+`requirements/nginx/conf/nginx.conf`
+```
+server {
+    listen      443 ssl;
+    server_name  <username>.42.fr www.<username>.42.fr;
+    root    /var/www/;
+    index index.php;
+    ssl_certificate     /etc/nginx/ssl/<username>.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/<username>.42.fr.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_timeout 10m;
+    keepalive_timeout 70;
+    location / {
+        try_files $uri /index.php?$args;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache';
+        if_modified_since off;
+        expires off;
+        etag off;
+    }
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass wordpress:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+}
 ```
 
 ## Finish
