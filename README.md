@@ -727,8 +727,8 @@ Variables that will be in the environment of an already running container are pa
       - "3306:3306"
     #networks:
     #  - inception
-    volumes:
-      - db-volume:/var/lib/mysql
+    #volumes:
+    #  - db-volume:/var/lib/mysql
     env_file:
       - .env
     restart: always
@@ -740,9 +740,7 @@ Mariadb runs on port 3306, so this port must be open.
 
 ### Step 5: Check MariaDB
 
-In order to check if everything worked out, we need to run the following command after starting the container:
-
-`cd .. && makefclean`
+In order to check if everything worked out, we need to run the following command after starting the MariaDb container:
 
 `cd srcs/requirements/mariadb/ && docker-compose up -d`
 
