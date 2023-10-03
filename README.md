@@ -193,16 +193,10 @@ touch project/Makefile
 mkdir project/srcs/requirements
 touch project/srcs/docker-compose.yml
 touch project/srcs/.env
-echo "DOMAIN_NAME=<username>.42.fr" > project/srcs/.env
-echo "CERT_=./requirements/tools/<username>.42.fr.crt" >> project/srcs/.env
-echo "KEY_=./requirements/tools/<username>.42.fr.key" >> project/srcs/.env
 echo "DB_NAME=wordpress" >> project/srcs/.env
 echo "DB_ROOT=rootpass" >> project/srcs/.env
 echo "DB_USER=wpuser" >> project/srcs/.env
 echo "DB_PASS=wppass" >> project/srcs/.env
-echo "MYSQL_ROOT_PASSWORD=123456" >> project/srcs/.env
-echo "MYSQL_USER=dbuser" >> project/srcs/.env
-echo "MYSQL_PASSWORD=1235" >> project/srcs/.env
 mkdir project/srcs/requirements/bonus
 mkdir project/srcs/requirements/mariadb
 mkdir project/srcs/requirements/mariadb/conf
@@ -1057,6 +1051,8 @@ nginx       nginx -g daemon off;             Up      0.0.0.0:443->443/tcp
 wordpress   /usr/sbin/php-fpm8 -F            Up
 ```
 
-Perfect we have finished our project
+Perfect we have finished our project, to check if comments work log in with yours admin or user in wordpress and write comment
+
+`https://<username>.42.fr/wp-login.php`
 
 <a><img src="https://media.makeameme.org/created/voila.jpg" weith=200px, height=200px></a>
