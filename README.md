@@ -96,16 +96,15 @@ Check SSH status.
 Start and stop the SSH Server
 `service ssh start/stop`
 
-
 ### Step 2: Installing & Configuring UFW
 Install *ufw*.
-
 `apt install ufw`
 
 Enable Firewall.
 `ufw enable`
 
 Configure the rules. Allow incoming connections using Port 42, 80 and 443.
+
 `ufw allow 42`
 
 Check UFW status.
@@ -142,7 +141,6 @@ vim /Users/<username>>/.ssh/known_hosts
 ```
 
 For first let's install other softs that we need
-
 ```
 apt install -y sudo docker docker-compose make openbox xinit kitty firefox-esr
 ```
@@ -235,7 +233,9 @@ echo ".git" > project/srcs/requirements/wordpress/.dockerignore
 echo ".env" >> project/srcs/requirements/wordpress/.dockerignore
 ```
 
-Run it `sh make_directories.sh`
+Run it
+
+`sh make_directories.sh`
 
 <a><img src="https://www.irishnews.com/picturesarchive/irishnews/irishnews/2017/09/02/203021043-b1845cb1-4309-450d-b26e-fb45979758b7.jpg" weith=400px, height=400px></a>
 
@@ -308,7 +308,9 @@ Clone this test docker
 `git clone https://github.com/codesshaman/simple_docker_nginx_html.git`
 
 
-Let's run it `cd simple_docker_nginx_html`
+Let's run it 
+
+`cd simple_docker_nginx_html`
 
 `docker-compose up -d`
 
@@ -464,10 +466,11 @@ A Docker image is a set of environments necessary to run certain software. It di
 
 ### Step 2: Creation of Dockerfile
 
-In Docker, a special file called Dockerfile is responsible for the configuration. It specifies a set of software that we want to deploy inside this container. Let's go to `cd ~/project/srcs/requirements/nginx/`
+In Docker, a special file called Dockerfile is responsible for the configuration. It specifies a set of software that we want to deploy inside this container. Let's go to 
+
+`cd ~/project/srcs/requirements/nginx/`
 
 `vim Dockerfile`
-
 ```
 FROM alpine:3.16
 RUN	apk update && apk upgrade && apk add --no-cache nginx
@@ -487,18 +490,19 @@ This way we run nginx directly and not in daemon mode. Daemon mode is a launch m
 
 ### Step 3: Nginx config file
 
-Let's add config file `vim conf/nginx.conf`
+Let's add config file 
+
+`vim conf/nginx.conf`
 
 Since we have already trained with a test container, let’s take a similar configuration, changing it for php so that it allows reading not html, but php wordpress files. We will no longer need port 80, since according to the guide we can only use port 443. But at the first stage, we will comment out the sections responsible for php and temporarily add html support (for testing):
-
 ```
 server {
     listen      443 ssl;
-    server_name  <username>>.42.fr www.<username>>.42.fr;
+    server_name  <username>.42.fr www.<username>.42.fr;
     root    /var/www/;
     index index.php index.html;
-    ssl_certificate     /etc/nginx/ssl/<username>>.42.fr.crt;
-    ssl_certificate_key /etc/nginx/ssl/<username>>.42.fr.key;
+    ssl_certificate     /etc/nginx/ssl/<username>.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/<username>.42.fr.key;
     ssl_protocols       TLSv1.2 TLSv1.3;
     ssl_session_timeout 10m;
     keepalive_timeout 70;
@@ -523,7 +527,9 @@ server {
 
 Port 9000 is exactly the port of our php-fpm, through which the connection between php and nginx is made. And wordpress in this case is the name of our container with wordpress.
 
-Also let's copy our keys here `cp ~/project/srcs/requirements/tools/* ~/project/srcs/requirements/nginx/tools/`
+Also let's copy our keys here 
+
+`cp ~/project/srcs/requirements/tools/* ~/project/srcs/requirements/nginx/tools/`
 
 <a><img src="https://img.universitystudent.org/1/1/2/i-understand-nothing-meme.jpg"></a>
 
@@ -531,7 +537,11 @@ Also let's copy our keys here `cp ~/project/srcs/requirements/tools/* ~/project/
 
 Docker-compose is a system for launching Docker containers; one might say, it is a kind of add-on to Docker. If in docker files we specified what software to install inside one container environment, then with docker-compose we can control the launch of many similar containers at once, launching them with one command.
 
-Let's modify our file `cd ../../ && vim docker-compose.yml` Be carefull, typing Tabs one more or less Tab will blow your .yml 
+Let's modify our file 
+
+`cd ../../ && vim docker-compose.yml` 
+
+Be carefull, typing Tabs one more or less Tab will blow your .yml 
 
 ```
 version: '3'
@@ -542,16 +552,12 @@ services:
       context: .
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
-    depends_on:
-      - wordpress
     ports:
       - "443:443"
-    networks:
-      - inception
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp-volume:/var/www/
+      - /home/${USER}/simple_docker_nginx_html/public/html:/var/www/
     env_file:
       - .env
     restart: always
@@ -718,8 +724,8 @@ Variables that will be in the environment of an already running container are pa
     container_name: mariadb
     ports:
       - "3306:3306"
-    networks:
-      - inception
+    #networks:
+    #  - inception
     volumes:
       - db-volume:/var/lib/mysql
     env_file:
@@ -734,6 +740,10 @@ Mariadb runs on port 3306, so this port must be open.
 ### Step 5: Check MariaDB
 
 In order to check if everything worked out, we need to run the following command after starting the container:
+
+`cd .. && makefclean`
+
+`cd srcs/requirements/mariadb/ && docker-compose up -d`
 
 `docker exec -it mariadb mysql -u root`
 
