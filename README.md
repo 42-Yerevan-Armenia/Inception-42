@@ -736,7 +736,7 @@ Mariadb runs on port 3306, so this port must be open.
 
 In order to check if everything worked out, we need to run the following command after starting the MariaDb container:
 
-`cd srcs/requirements/mariadb/ && docker-compose up -d`
+`cd requirements/mariadb/ && docker-compose up -d`
 
 `docker exec -it mariadb mysql -u root`
 
