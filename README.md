@@ -232,7 +232,7 @@ Run it
 
 `sh make_directories.sh`
 
-<a><img src="https://www.irishnews.com/picturesarchive/irishnews/irishnews/2017/09/02/203021043-b1845cb1-4309-450d-b26e-fb45979758b7.jpg" weith=400px, height=400px></a>
+<a><img src="https://www.irishnews.com/resizer/v2/B52GWRDXPJPAFGV2JVGV25LWII.jpg?smart=true&auth=00fe25ccb9b32b2af67331bb64b54d1c54798091b41b3aaa1b17dadc0f6a2b96&width=1200&height=630" weith=400px, height=400px></a>
 
 ## Install Certificate
 
@@ -526,7 +526,7 @@ Also let's copy our keys here
 
 `cp ~/project/srcs/requirements/tools/* ~/project/srcs/requirements/nginx/tools/`
 
-<a><img src="https://img.universitystudent.org/1/1/2/i-understand-nothing-meme.jpg"></a>
+<a><img src="https://s14363.pcdn.co/wp-content/uploads/2021/01/nginx_meme.png"></a>
 
 ### Step 4: Docker config for Nginx
 
@@ -1055,4 +1055,5 @@ Perfect we have finished our project, to check if comments work log in with your
 
 `https://<username>.42.fr/wp-login.php`
 
-<a><img src="https://media.makeameme.org/created/voila.jpg" weith=200px, height=200px></a>
+
+<a href="https://imgflip.com/i/8ce7iv"><img src="https://i.imgflip.com/8ce7iv.jpg" /></a>
