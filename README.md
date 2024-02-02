@@ -232,7 +232,7 @@ Run it
 
 `sh make_directories.sh`
 
-<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_dirs.png" weith=400px, height=400px></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_dirs.jpeg" weith=400px, height=400px></a>
 
 ## Install Certificate
 
