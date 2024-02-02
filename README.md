@@ -43,7 +43,7 @@ You will create your first machine in VirtualBox (or UTM if you can’t use Virt
 ### <a name="virtual-machine">What is a Virtual Machine?</a>
 
   <a>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Virtualbox_logo.png?20150209215936" width="100" height="100">
+    <img src="https://github.com/Aramxxx8691/Git_Images/blob/master/VM.png" width="100" height="100">
   </a>
 
 **The resources are managed followitn the needs, from the host to the guests.** When an user from a VM do a task that requires additional resources from the physical environment, the hypervisor manages the request so that the guest OS could access the resources of the physical environment.<br>
@@ -65,7 +65,7 @@ At the time of writing, the latest stable version of [debian](https://www.debian
   - username with your username
   - Sowtware only SSH
 
-<a><img src="https://lucloi.vn/wp-content/uploads/2019/12/maxresdefault-58.jpg"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_JDI.jpeg"></a>
 
 ### Step 1: Configuring SSH
 
@@ -115,9 +115,9 @@ Add forward rule for VirtualBox.
 
 1. Go to VirtualBox-> Choose the VM->Select Settings 
 2. Choose “Network”-> “Adapter 1"->”Advanced”->”Port Forwarding”
-<a><img src="https://miro.medium.com/max/1342/1*rCj_FeuZ5Rm2abz48qhulg.png"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/b2br_network.png"></a>
 3. Enter the values as shown:
-<a><img src="https://github.com/codesshaman/inception/blob/main/media/ports_forwarding/step_6.png?raw=true"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/port.png"></a>
 
 Restart your VM.
 `reboot`
@@ -146,7 +146,7 @@ For first let's install other softs that we need
 apt install -y sudo docker docker-compose make openbox xinit kitty firefox-esr
 ```
 
-<a><img src="https://media.makeameme.org/created/and-then-we-9544377ac5.jpg" weith=200px, height=200px></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_ports.jpeg" weith=200px, height=200px></a>
 
 ### Step 4: Configuring *user* 
 
@@ -232,7 +232,7 @@ Run it
 
 `sh make_directories.sh`
 
-<a><img src="https://www.irishnews.com/resizer/v2/B52GWRDXPJPAFGV2JVGV25LWII.jpg?smart=true&auth=00fe25ccb9b32b2af67331bb64b54d1c54798091b41b3aaa1b17dadc0f6a2b96&width=1200&height=630" weith=400px, height=400px></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_dirs.png" weith=400px, height=400px></a>
 
 ## Install Certificate
 
@@ -290,7 +290,7 @@ Now let's rename files for *nginx*
 
 `mv <username>.42.fr.pem <username>.42.fr.crt`
 
-<a><img stc="https://media.musclegrid.io/glensfallskarate.com/uploads/2020/01/21040811/jackie-chan-wait-what-meme.jpg"></a>
+<a><img stc="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_wait_what.jpeg"></a>
 
 ### Step 4: Test project
 
@@ -313,7 +313,7 @@ Let's run it
 
 Select Web browser and go to *localhost* or *username.42.fr* 
 
-<a><img src="https://github.com/codesshaman/inception/blob/main/media/setting_docker/step_4.png?raw=true"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/html.png"></a>
 
 You can turn it off with *Ctrl + C*
 
@@ -381,7 +381,7 @@ Now let's run our test-docker and go to web by startx
 
 If you see this, don't worry because our own certificat don't have security cualification.
 
-<a><img src="https://github.com/codesshaman/inception/blob/main/media/install_certificate/step_6.png?raw=true"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/cert.png"></a>
 
 Max we can do here just *Advanced ...* + *Accept the Risk and Contine*
 
@@ -443,7 +443,7 @@ And finly for total fclean first we stop out container by `docker stop $$(docker
 
 ## Nginx
 
-<a><img src="https://github.com/codesshaman/inception/blob/main/media/nginx_deploy/step_1.png?raw=true"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/docker.png"></a>
 
 Okey now let's take what it need
 
@@ -526,7 +526,7 @@ Also let's copy our keys here
 
 `cp ~/project/srcs/requirements/tools/* ~/project/srcs/requirements/nginx/tools/`
 
-<a><img src="https://s14363.pcdn.co/wp-content/uploads/2021/01/nginx_meme.png"></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_nginx.png"></a>
 
 ### Step 4: Docker config for Nginx
 
@@ -562,7 +562,7 @@ First in *services:* is our *nginx*, then the path of Dockerfile, also giving a 
 
 We add sections so that the container sees our config and our keys, and we also make sure to mount our /var/www - that will run nginx. Later we will take files from the WordPress directory.
 
-<a><img src="https://media.makeameme.org/created/time-to-relax-5001808360.jpg" weith=200px, height=200px></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_relax.jpeg" weith=200px, height=200px></a>
 
 ## MariaDB
 
@@ -700,7 +700,7 @@ Docker has two ways to pass environment variables to an image: via ARG and via E
 
 Variables that will be in the environment of an already running container are passed through ENV. We will not use them for our tasks.
 
-<a><img src="https://i.imgflip.com/2kujgf.jpg" weith=200px, height=200px></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_i'm_sorry.jpeg" weith=200px, height=200px></a>
 
 ### Step 4: Docker config for MariaDB
 
@@ -769,7 +769,7 @@ We exit the environment using the exit command or Ctrl+D.
 
 ### Step 1: Again Dockerfile
 
-<a><img src="https://s.yimg.com/ny/api/res/1.2/NiuCf2JkvlZAz0aTNXbI7g--/YXBwaWQ9aGlnaGxhbmRlcjtoPTY2Ng--/https://media.zenfs.com/en-us/news.mashable/a6f793f75c83be84ab10eab5aeca37b0" weith=200px, height=200px></a>
+<a><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_Ah_shit.png" weith=200px, height=200px></a>
 
 `vim requirements/wordpress/Dockerfile`
 
@@ -1056,4 +1056,4 @@ Perfect we have finished our project, to check if comments work log in with your
 `https://<username>.42.fr/wp-login.php`
 
 
-<a href="https://imgflip.com/i/8ce7iv"><img src="https://i.imgflip.com/8ce7iv.jpg" /></a>
+<a href=""><img src="https://github.com/Aramxxx8691/Git_Images/blob/master/meme_skeletor_finally.jpeg" /></a>
