@@ -759,7 +759,35 @@ Here we run `show databases;` command and you will see this
 
 At the bottom there must be a database we created with the name wordpress! If it is not there, then our script did not work correctly or did not work at all. This may be due to many reasons - the script file was not copied, the environment variables were not transferred, the wrong values were written in the .env file...
 
+MariaDB [(none)]> SELECT user, host FROM mysql.user;
+
+```
++----------------------+
+| user     | host      |
++----------------------+
+| arakhurs | %         |
+| root     | localhost |
++----------------------+
+2 rows in set (0.000 sec)
+```
+
 But if everything is done correctly, then congratulations - we have successfully launched the database!
+
+MariaDB [(none)]> USE wordpress;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [wordpress]> SELECT * FROM wp_user;
+```
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ID | user_login | user_pass             | user_nickname | user_email     | user_url              | user_registered     | user_activation_key | user_status | display_name |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|  1 | root       | $FLSlwkm,.//aaadf2F32 | root          | root@gmail.com | http://arakhurs.42.fr | 2024-01-16 17:03:09 |                     | 0           | root         |
+|  2 | user       | $FLSlwkm,.//aaadf2F32 | user          | user@gmail.com |                       | 2024-01-16 17:03:10 |                     | 0           | user         |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.000 sec)
+```
 
 We exit the environment using the exit command or Ctrl+D.
 
